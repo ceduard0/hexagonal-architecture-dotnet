@@ -33,9 +33,10 @@ namespace SalesApp.Infrastructure.API.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<Product> Get(Guid id)
         {
-            return "value";
+            var service = CreateService();
+            return Ok(service.GetById(id));
         }
 
         // POST api/values
