@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SalesApp.Domain;
+using SalesApp.Aplication.Services;
+using SalesApp.Infrastructure.Data.Context;
+using SalesApp.Infrastructure.Data.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,11 +15,20 @@ namespace SalesApp.Infrastructure.API.Controllers
     [Route("api/[controller]")]
     public class ProductController : Controller
     {
+
+        ProductService CreateService()
+        {
+            SaleContext db = new SaleContext();
+            ProductRepository repository = new ProductRepository(db);
+            ProductService service = new ProductService(repository);
+            return service;
+        }
         // GET: api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<List<Product>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var service = CreateService();
+            return Ok(service.GetAll());
         }
 
         // GET api/values/5
