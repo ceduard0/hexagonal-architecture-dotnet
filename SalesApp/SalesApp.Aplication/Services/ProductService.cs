@@ -16,7 +16,7 @@ namespace SalesApp.Aplication.Services
 
         public Product Add(Product entity)
         {
-            if (entity == null);
+            if (entity is null)
                 throw new ArgumentNullException("The product is required");
 
             var result = productRepository.Add(entity);
@@ -27,7 +27,7 @@ namespace SalesApp.Aplication.Services
 
         public void Delete(Guid entityId)
         {
-            if (entityId == null) ;
+            if (entityId == null) 
                 throw new ArgumentNullException("The product is required");
 
             productRepository.Delete(entityId);

@@ -41,8 +41,10 @@ namespace SalesApp.Infrastructure.API.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public ActionResult Post([FromBody] Product product)
         {
+            var service = CreateService();            
+            return Ok(service.Add(product));
         }
 
         // PUT api/values/5
