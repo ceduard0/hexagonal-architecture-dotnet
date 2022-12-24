@@ -55,8 +55,10 @@ namespace SalesApp.Infrastructure.API.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
+            var service = CreateService();
+            service.Delete(id);
         }
     }
 }
