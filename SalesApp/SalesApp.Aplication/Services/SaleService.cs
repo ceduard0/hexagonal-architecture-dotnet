@@ -35,22 +35,22 @@ namespace SalesApp.Aplication.Services
                 if (selectedProduct == null)
                     throw new ArgumentNullException("The product is required");
 
-                var saleDetail = new SaleDetail();
-                saleDetail.SaleId = sale.SaleId;
-                saleDetail.ProductId = selectedProduct.ProductId;
-                saleDetail.UnitCost = selectedProduct.Cost;
-                saleDetail.UnitPrice = selectedProduct.Price;
-                saleDetail.SoldQuantity = detail.SoldQuantity;
-                saleDetail.SubTotal = detail.UnitPrice * detail.SoldQuantity;
-                saleDetail.Tax = detail.SubTotal * DEFAULT_TAX / DEFAULT_DIV;
-                saleDetail.Total = saleDetail.SubTotal + saleDetail.Tax;
-                saleDetailRepository.Add(saleDetail);
 
-                selectedProduct.Stock -= saleDetail.SoldQuantity;
+                detail.SaleId = sale.SaleId;
+                detail.ProductId = selectedProduct.ProductId;
+                detail.UnitCost = selectedProduct.Cost;
+                detail.UnitPrice = selectedProduct.Price;
+                detail.SoldQuantity = detail.SoldQuantity;
+                detail.SubTotal = detail.UnitPrice * detail.SoldQuantity;
+                detail.Tax = detail.SubTotal * DEFAULT_TAX / DEFAULT_DIV;
+                detail.Total = detail.SubTotal + detail.Tax;
+                saleDetailRepository.Add(detail);
+
+                selectedProduct.Stock -= detail.SoldQuantity;
                 productRepository.Edit(selectedProduct);
-                entity.SubTotal += saleDetail.SubTotal;
-                entity.Tax += saleDetail.Tax;
-                entity.Total += saleDetail.Total;
+                entity.SubTotal += detail.SubTotal;
+                entity.Tax += detail.Tax;
+                entity.Total += detail.Total;
             });
 
             saleRepository.SaveAll();

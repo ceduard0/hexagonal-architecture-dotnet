@@ -36,7 +36,7 @@ namespace SalesApp.Aplication.Services
 
         public void Edit(Product entity)
         {
-            if (entity == null) ;
+            if (entity == null) 
                 throw new ArgumentNullException("The product is required");
 
             productRepository.Edit(entity);

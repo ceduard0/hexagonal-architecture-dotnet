@@ -13,19 +13,20 @@ using SalesApp.Infrastructure.Data.Repositories;
 namespace SalesApp.Infrastructure.API.Controllers
 {
     [Route("api/[controller]")]
-    public class ProductController : Controller
+    public class SaleController : Controller
     {
-
-        ProductService CreateService()
+        SaleService CreateService()
         {
             SaleContext db = new SaleContext();
-            ProductRepository repository = new ProductRepository(db);
-            ProductService service = new ProductService(repository);
+            ProductRepository productRepository = new ProductRepository(db);
+            SaleRepository saleRepository = new SaleRepository(db);
+            SaleDetailRepository saleDetailRepository = new SaleDetailRepository(db);
+            SaleService service = new SaleService(saleRepository, productRepository, saleDetailRepository);
             return service;
         }
         // GET: api/values
         [HttpGet]
-        public ActionResult<List<Product>> Get()
+        public ActionResult<List<Sale>> Get()
         {
             var service = CreateService();
             return Ok(service.GetAll());
@@ -33,7 +34,7 @@ namespace SalesApp.Infrastructure.API.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<Product> Get(Guid id)
+        public ActionResult<Sale> Get(Guid id)
         {
             var service = CreateService();
             return Ok(service.GetById(id));
@@ -41,27 +42,20 @@ namespace SalesApp.Infrastructure.API.Controllers
 
         // POST api/values
         [HttpPost]
-        public ActionResult Post([FromBody] Product product)
-        {
-            var service = CreateService();            
-            return Ok(service.Add(product));
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody] Product product)
+        public ActionResult<Sale> Post([FromBody]Sale sale)
         {
             var service = CreateService();
-            product.ProductId = id;
-            service.Edit(product);
+            return Ok(service.Add(sale));
         }
+
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        [HttpDelete("{id}/cancel")]
+        public ActionResult Cancel(Guid id)
         {
             var service = CreateService();
-            service.Delete(id);
+            service.Cancel(id);
+            return Ok("Sale was canceled...");
         }
     }
 }
